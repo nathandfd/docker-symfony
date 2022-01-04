@@ -1,4 +1,4 @@
-FROM php:8-apache
+FROM php:7.4-apache
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
 \
@@ -22,5 +22,11 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
             pdo pdo_mysql opcache intl zip calendar dom mbstring gd xsl \
 \
     &&  pecl install apcu && docker-php-ext-enable apcu
+
+RUN curl https://deb.nodesource.com/setup_12.x | bash
+RUN curl https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+
+RUN apt-get update && apt-get install -y nodejs yarn postgresql-client
 
 WORKDIR /var/www/
